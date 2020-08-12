@@ -43,7 +43,7 @@ class Relu(Layer):
         return np.where(x > 0, 1, 0)
 
     def plot(self, ax):
-        for line in zip(super().weights, super().biases):
+        for w, b in zip(super().weights, super().biases):
             pass
 
 #Sigmoid

@@ -14,7 +14,7 @@ class Sequential:
         return a - y
 
     def train(self, data, labels, learning_rate):
-        for (x, y) in zip(data, labels):
+        for x, y in zip(data, labels):
             a = self.predict(x)
             gradient = self.d_quad_cost(y, a)
             for layer in reversed(self.layers):
