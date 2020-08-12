@@ -42,6 +42,10 @@ class Relu(Layer):
     def d_activation(x):
         return np.where(x > 0, 1, 0)
 
+    def plot(self, ax):
+        for line in zip(super().weights, super().biases):
+            pass
+
 #Sigmoid
 class Sigmoid(Layer):
     @staticmethod
