@@ -42,11 +42,17 @@ class Relu(Layer):
     def d_activation(x):
         return np.where(x > 0, 1, 0)
 
-    def plot(self, ax):
-        for w, b in zip(super().weights, super().biases):
-            pass
+# Leaky Relu
+class Lrelu(Layer):
+    @staticmethod
+    def activation(x):
+        return np.where(x > 0, x, x * 0.1)
 
-#Sigmoid
+    @staticmethod
+    def d_activation(x):
+        return np.where(x > 0, 1, 0.1)
+
+# Sigmoid
 class Sigmoid(Layer):
     @staticmethod
     def activation(x):
@@ -55,3 +61,46 @@ class Sigmoid(Layer):
     @staticmethod
     def d_activation(x):
         return Sigmoid.activation(x) * (1 - Sigmoid.activation(x))
+
+# Sine
+class Sine(Layer):
+    @staticmethod
+    def activation(x):
+        return np.sin(x)
+
+    @staticmethod
+    def d_activation(x):
+        return np.cos(x)
+
+# Augmented Sine
+class Asine:
+    def __init__(self, shape):
+        self.shape = shape
+        self.amp = np.ones((shape[0], 1))
+        self.weights = np.random.standard_normal(shape)
+        self.biases = np.random.standard_normal((shape[0], 1))
+
+    @staticmethod
+    def activation(x):
+        return np.sin(x)
+
+    @staticmethod
+    def d_activation(x):
+        return np.cos(x)
+
+    def feed_foward(self, x):
+        x = np.reshape(x, (self.shape[1], 1))
+        self.a = x
+        self.z = self.weights@x + self.biases
+        self.act =  self.activation(self.z)
+        return self.amp * self.act
+
+    def back_prop(self, gradient):
+        self.gradient = gradient
+        self.delta = gradient * self.amp * self.d_activation(self.z)
+        return self.weights.T@self.delta
+
+    def update(self, learning_rate):
+        self.amp -= learning_rate * self.gradient * self.act
+        self.weights -= learning_rate * (self.delta@self.a.T)
+        self.biases -= learning_rate * self.delta

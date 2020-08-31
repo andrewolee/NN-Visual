@@ -1,15 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from layer import Relu, Sigmoid
+from layer import Relu, Sigmoid, Sine, Lrelu, Asine
 from sequential import Sequential
 
-training_set_size = 5000
+training_set_size = 4000
 epochs = 9
-learning_rate = 0.01
+learning_rate = 0.02
 
 model = Sequential([
-    Relu((5, 2)),
-    Sigmoid((1, 5))
+    Asine((8, 2)),
+    Asine((8, 8)),
+    Sigmoid((1, 8))
 ])
 
 delta = 0.02
